@@ -2,6 +2,7 @@ const http = require('http');
 const router = require('./routers/router');
 
 const server = http.createServer((req, res) => {
+    console.log(`${req.method} :${req.url}`);
     router(req,res);
 })
 

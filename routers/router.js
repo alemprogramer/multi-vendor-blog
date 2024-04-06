@@ -19,7 +19,6 @@ module.exports = (req,res)=>{
     
     let flag = true
     routers.forEach((router)=>{
-        console.log("🚀 ~ parsedUrl:",url.parse(req.url, true).query)
         if(router.path === '/'+rootUrl){
             flag = false;
             router.handler(req,res);
