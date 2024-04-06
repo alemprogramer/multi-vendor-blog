@@ -1,26 +1,11 @@
-//all npm packages are imported here
-require("dotenv").config();
-const express = require('express');
-const mongoose = require('mongoose');
+const http = require('http');
+const router = require('./routers/router');
 
-//all custom made models are imported here
-const middlewares = require('./middlewares/middleware');
-const routes = require('./routers/router')
-const app = express();
-
-app.use(middlewares);
-routes(app)
+const server = http.createServer((req, res) => {
+    router(req,res);
+})
 
 
-
-const PORT = process.env.PORT || 3000
-
-mongoose.connect(process.env.database_url)
-    .then(()=>{
-        console.log(`server is connected`);
-        app.listen(PORT,()=>{
-            console.log(`server is running on port : ${PORT}`);
-        })
-    })
-
-
+server.listen(3000,() => {
+    console.log(`server is running on port ${3000}`);
+});
