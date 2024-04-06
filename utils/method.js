@@ -1,36 +1,54 @@
 const url = require('url');
 
 class Router {
-    constructor(req,res){
+    constructor(req, res){
         this.req = req;
         this.res = res;
-        this.functions=[]
-        this.index =0
+        this.functions = [];
+        this.index = 0;
         this.next = this.next.bind(this);
     }
-    get(path,...funcs){
-        let  parsedUrl = url.parse(this.req.url, true);
-        let subUrl = parsedUrl.path.split('/').slice(2)
-        const pass = subUrl? '/'+subUrl.join('/') : '/'
-        console.log("🚀 ~ Router ~ get ~ arrUrl:", pass===path)
-        if(this.req.method === 'GET' && path === pass){
-            this.functions=[...funcs]
-            funcs[0](this.req,this.res,this.next);
+
+    handleMethod(method, path, ...funcs) {
+        const parsedUrl = url.parse(this.req.url, true);
+        const subUrl = parsedUrl.path.split('/').slice(2);
+        const pass = subUrl ? '/' + subUrl.join('/') : '/';
+        
+        if (this.req.method === method && path === pass) {
+            this.functions = [...funcs];
+            funcs[0](this.req, this.res, this.next);
         }
     }
-    next(){
-        if(this.functions.length>this.index){
+
+    get(path, ...funcs) {
+        this.handleMethod('GET', path, ...funcs);
+    }
+
+    post(path, ...funcs) {
+        this.handleMethod('POST', path, ...funcs);
+    }
+
+    put(path, ...funcs) {
+        this.handleMethod('PUT', path, ...funcs);
+    }
+
+    delete(path, ...funcs) {
+        this.handleMethod('DELETE', path, ...funcs);
+    }
+
+    next() {
+        if (this.functions.length > this.index) {
             this.index++;
-            this.functions[this.index](this.req,this.res,this.next);
+            this.functions[this.index](this.req, this.res, this.next);
         }
     }
-    end(){
+
+    end() {
         this.res.end(JSON.stringify({
-            status:404,
-            message:'page not found'
+            status: 404,
+            message: 'page not found'
         }));
     }
-        
 }
 
 module.exports = Router;
