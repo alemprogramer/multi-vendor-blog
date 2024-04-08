@@ -1,9 +1,10 @@
 const http = require('http');
 const router = require('./routers/router');
+const parseData = require('./utils/dataParser')
 
 const server = http.createServer((req, res) => {
     console.log(`${req.method} :${req.url}`);
-    router(req,res);
+    parseData(req,res,router);
 })
 
 const PORT =process.env.PORT || 3001
