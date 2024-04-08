@@ -6,8 +6,9 @@ const parseData = (req,res,router)=>{
     });
 
     req.on('end', () => {
-        console.log('in');
-        req.body = JSON.parse(data) 
+        if(data){
+            req.body = JSON.parse(data|| {})
+        }
         router(req,res)
     });
     console.log('here');
