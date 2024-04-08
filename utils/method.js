@@ -44,10 +44,12 @@ class Router {
     }
 
     end() {
-        this.res.end(JSON.stringify({
-            status: 404,
-            message: 'page not found'
-        }));
+        setTimeout(()=>{
+            this.res.end(JSON.stringify({
+                status: 404,
+                message: 'page not found'
+            }));
+        },0)
     }
 }
 

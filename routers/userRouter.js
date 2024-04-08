@@ -10,7 +10,7 @@ function routerFun(req,res){
     const router = new  Router(req, res);
 
     router.get('/',(req,res,next)=>{console.log('test from middle');next()},(req,res,next)=>{console.log('test from middle2');next()},test);
-    router.get('/all',(req,res,next)=>res.end('from user all function'));
+    router.get('/all',getAllUserController);
     router.delete('/all',(req,res,next)=>res.end('from user post all function'));
     router.end();
 

@@ -1,6 +1,6 @@
 exports.getAllUserController = async (req,res,next)=>{
     try {
-        res.send('all user')
+        res.end('all user');
     } catch (error) {
         next(error)
     }
