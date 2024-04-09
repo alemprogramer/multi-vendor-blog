@@ -9,6 +9,15 @@ exports.parseData = (req,res,router)=>{
         if(data){
             req.body = JSON.parse(data|| {})
         }
+       
+        res.status = (code) => {
+            res.statusCode = code;
+            return res; 
+        };
+        res.json = (data) => {
+            res.data = res.end(JSON.stringify(data));
+            return res; 
+        };
         router(req,res)
     });
 }
