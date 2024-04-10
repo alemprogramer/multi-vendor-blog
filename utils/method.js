@@ -6,6 +6,7 @@ class Router {
         this.res = res;
         this.functions = [];
         this.index = 0;
+        this.intervalId;
         this.next = this.next.bind(this);
     }
 
@@ -15,6 +16,7 @@ class Router {
         const pass = subUrl ? '/' + subUrl.join('/') : '/';
         
         if (this.req.method === method && path === pass) {
+            clearInterval(this.intervalId);
             this.functions = [...funcs];
             funcs[0](this.req, this.res, this.next);
         }
@@ -45,12 +47,13 @@ class Router {
 
     end() {
         console.log('end');
-        setTimeout(()=>{
+        this.intervalId=setInterval(()=>{
+            clearInterval(this.intervalId);
             this.res.end(JSON.stringify({
                 status: 404,
                 message: 'page not found'
             }));
-        },0)
+        },1000)
     }
 }
 

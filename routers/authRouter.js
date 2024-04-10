@@ -8,7 +8,7 @@ const routerFun = (req,res)=>{
     router.post('/register', userRegisterController);
     router.post('/login', userLoginController);
     router.post('/refreshToken', refreshTokenController);
-    // router.end();
+    router.end();
 
 }
 
