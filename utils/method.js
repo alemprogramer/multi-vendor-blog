@@ -44,6 +44,7 @@ class Router {
     }
 
     end() {
+        console.log('end');
         setTimeout(()=>{
             this.res.end(JSON.stringify({
                 status: 404,

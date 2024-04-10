@@ -1,6 +1,11 @@
 const url = require('url');
 const userRouter = require('../routers/userRouter');
+const authRouter = require('../routers/authRouter');
 const routers = [
+    {
+        path: '/auth',
+        handler: authRouter
+    },
     {
         path:'/user',
         handler:userRouter
