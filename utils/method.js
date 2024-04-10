@@ -6,20 +6,27 @@ class Router {
         this.res = res;
         this.functions = [];
         this.index = 0;
-        this.intervalId;
         this.next = this.next.bind(this);
+        this.invokeCount = 0;
+        this.sync = 0
     }
 
     handleMethod(method, path, ...funcs) {
         const parsedUrl = url.parse(this.req.url, true);
-        const subUrl = parsedUrl.path.split('/').slice(2);
+        const subUrl = parsedUrl.pathname.split('/').slice(2);
+        console.log("🚀 ~ Router ~ handleMethod ~ subUrl:", subUrl)
         const pass = subUrl ? '/' + subUrl.join('/') : '/';
+        
+        this.invokeCount++;
         
         if (this.req.method === method && path === pass) {
             clearInterval(this.intervalId);
             this.functions = [...funcs];
             funcs[0](this.req, this.res, this.next);
-        }
+        }else{
+            this.sync++
+        }        
+        
     }
 
     get(path, ...funcs) {
@@ -56,13 +63,13 @@ class Router {
     }
 
     end() {
-        this.intervalId=setInterval(()=>{
-            clearInterval(this.intervalId);
-            this.res.end(JSON.stringify({
+        if(this.invokeCount == this.sync){
+            return this.res.status(404).json({
                 status: 404,
                 message: 'page not found'
-            }));
-        },1000)
+            });
+        }
+        
     }
 }
 
