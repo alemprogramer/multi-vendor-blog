@@ -14,7 +14,6 @@ class Router {
     handleMethod(method, path, ...funcs) {
         const parsedUrl = url.parse(this.req.url, true);
         const subUrl = parsedUrl.pathname.split('/').slice(2);
-        console.log("🚀 ~ Router ~ handleMethod ~ subUrl:", subUrl)
         const pass = subUrl ? '/' + subUrl.join('/') : '/';
         
         this.invokeCount++;
