@@ -1,5 +1,5 @@
 const User = require('../models/User');
-const { createJWT } = require('../utils/jwt');
+const { createJWT, verifyJWT } = require('../utils/jwt');
 const {hash,compare} = require('../utils/passwordEncrypt');
 exports.userRegisterController = async (req,res,next) => {
     try {
@@ -71,7 +71,41 @@ exports.userLoginController = async (req,res,next) => {
 
 exports.refreshTokenController = async (req,res,next) => {
     try {
-        res.end('refreshToken');
+        const {refreshToken} = req.body;
+        if(!refreshToken){
+            return res.status(403).json({message: 'please give  your refresh token'});
+        }
+
+        const isTokenValid = await verifyJWT(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+        if(!isTokenValid){
+            return res.status(403).json({message: 'invalid refresh token'});
+        }
+
+        if(isTokenValid.ext < Date.now()){
+            return res.status(403).json({message: 'please login again'});
+        }
+
+        const user = await User.findById(isTokenValid.id)
+
+        return res.status(200).json({
+            message:'Token Refresh Successfully',
+            accessToken: await createJWT(
+                {
+                    id:user._id,
+                    ext: Date.now()+1000*60*60*50 //50 minutes
+                },
+                process.env.ACCESS_TOKEN_SECRET
+            ),
+            reFreshToken:await createJWT(
+                {
+                    id:user._id,
+                    ext: Date.now()+1000*60*60*50 //50 minutes
+                },
+                process.env.REFRESH_TOKEN_SECRET 
+            ),
+        })
+
+
     } catch (error) {
         console.log(error);
         res.end(error);
