@@ -1,5 +1,7 @@
+const url = require('url');
 exports.parseData = (req,res,router)=>{
     let data = '';
+    const parsedUrl = url.parse(req.url, true);
     
     req.on('data', (chunk) => {
       data += chunk;
@@ -18,6 +20,7 @@ exports.parseData = (req,res,router)=>{
             res.data = res.end(JSON.stringify(data));
             return res; 
         };
+        req.query = parsedUrl.query || {};
         router(req,res)
     });
 }
