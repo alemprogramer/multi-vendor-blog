@@ -21,7 +21,7 @@ exports.parseData = (req,res,router)=>{
             return res; 
         };
         req.query = parsedUrl.query || {};
-        router(req,res)
+        // router(req,res)
     });
 }
 exports.color = (code)=>{
