@@ -1,11 +1,12 @@
 const http = require('http');
 const router = require('./routers/router');
 const {parseData,color} = require('./utils/dataParser');
+const middlewares = require('./middlewares/middleware');
 const mongoose = require('mongoose');
 
 const server = http.createServer((req, res) => {
     const startTime = Date.now();
-    
+    middlewares(req, res,()=>console.log('one'),()=>console.log('two'))
     parseData(req,res,router);
 
     res.on('finish', () => {
