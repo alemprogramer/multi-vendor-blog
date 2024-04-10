@@ -38,15 +38,24 @@ class Router {
         this.handleMethod('DELETE', path, ...funcs);
     }
 
-    next() {
+    next(error) {
+        if (error) {
+            // Error handling
+            console.error('Error occurred:', error);
+            this.res.statusCode = 500; // Internal Server Error
+            this.res.end(JSON.stringify({ error: 'Internal Server Error' }));
+            return; // Stop further execution
+        }
         if (this.functions.length > this.index) {
             this.index++;
             this.functions[this.index](this.req, this.res, this.next);
+        }else {
+            // No more middleware to execute
+            this.end();
         }
     }
 
     end() {
-        console.log('end');
         this.intervalId=setInterval(()=>{
             clearInterval(this.intervalId);
             this.res.end(JSON.stringify({
