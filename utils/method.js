@@ -14,12 +14,27 @@ class Router {
     handleMethod(method, path, ...funcs) {
         const parsedUrl = url.parse(this.req.url, true);
         const subUrl = parsedUrl.pathname.split('/').slice(2);
+        if(!subUrl[subUrl.length - 1]){
+            subUrl.pop();
+        }
         const pass = subUrl ? '/' + subUrl.join('/') : '/';
-        
+        //get param id name from endpoint 
+        const data = path.match(/:(.*?)(?=\/|$)/g);     
+        const regex = new RegExp('^' + path.replace(/:[^\/]+/g, '([^\/]+)') + '$');
+        // console.log(regex.test(pass),this.req.method === method ,method);
         this.invokeCount++;
         
-        if (this.req.method === method && path === pass) {
-            clearInterval(this.intervalId);
+        if (this.req.method === method && regex.test(pass)) {
+            const pathArr = path.split('/');
+
+            for(let i=0; i<pathArr.length; i++){
+                if(pathArr[i].startsWith(":")){
+                    this.req.params ={
+                        [data[0].slice(1)]:pass.split('/')[i]
+                    };
+                }
+            }
+
             this.functions = [...funcs];
             funcs[0](this.req, this.res, this.next);
         }else{
