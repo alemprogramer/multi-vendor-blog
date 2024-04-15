@@ -6,8 +6,9 @@ const mongoose = require('mongoose');
 
 const server = http.createServer((req, res) => {
     const startTime = Date.now();
-    middlewares(req, res,parseData,()=>console.log('one'),()=>console.log('two'))
-    router(req, res);
+    middlewares(req, res,()=>console.log('one'),()=>console.log('two'))
+    parseData(req,res,router);
+    // router(req, res)
 
     res.on('finish', () => {
         const endTime = Date.now(); 
