@@ -78,3 +78,16 @@ exports.deletePostController = async (req,res,next)=>{
         res.status(500).json({ error: 'Server error' });
     }
 }
+
+exports.sharePostController = async (req,res,next)=>{
+    try {
+        const post = await Post.findById(req.params.postId);
+
+        post.numbersOfShare = post.numbersOfShare+1
+        post.shares = [...post.shares,req.id]
+        await post.save();
+        res.json({ message: 'Post share successfully' });
+    } catch (error) {
+        next(error);
+    }
+}

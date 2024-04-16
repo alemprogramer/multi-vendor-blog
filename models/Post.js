@@ -29,7 +29,10 @@ const postSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Comments',
     }],
-    numberOfLikes: Number,
+    numberOfLikes: {
+        type:Number,
+        default: 0,
+    },
     likes: [{
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -39,11 +42,13 @@ const postSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
     }],
-    numbersOfShare: Number,
+    numbersOfShare: {
+        type:Number,
+        default: 0,
+    },
     shares: [{
         type: Schema.Types.ObjectId,
         ref: 'Share',
-
     }],
 
 }, {
