@@ -12,7 +12,9 @@ exports.bookmarksGetController = async (req, res, next)=>{
     try {
         let profile = await Profile.findOne({ user: req.user._id })
         if(!profile){
-          return  res.redirect('/dashboard');
+            return res.status(403).json({
+                error:'Your are not authenticated user'
+            })
         }
         if(profile.bookmark.includes(postId)){
             await Profile.findOneAndUpdate(
@@ -30,9 +32,6 @@ exports.bookmarksGetController = async (req, res, next)=>{
         res.status(200).json({bookmark})
 
     } catch (error) {
-        console.log(error)
-        return res.status(500).json({
-            error:'Server Error occurred'
-        })
+        next(error)
     }
 }

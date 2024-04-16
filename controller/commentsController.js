@@ -28,14 +28,10 @@ exports.commentsPostController = async (req, res, next)=>{
             path:'user',
             select: 'name profilePics'
         })
-        console.log('commentsJSON',commentsJSON);
         return res.status(200).json(commentsJSON)
         
     } catch (error) {
-        console.log(error)
-        return res.status(500).json({
-            error:'Server Error occurred'
-        })
+        next(error);
     }
 
 
@@ -48,7 +44,6 @@ exports.replyCommentsPostController = async (req, res, next)=>{
     
     let {commentID} = req.params
     let {body} = req.body
-    console.log(body);
 
     if(!req.user){
         return res.status(403).json({
@@ -74,10 +69,7 @@ exports.replyCommentsPostController = async (req, res, next)=>{
 
         
     } catch (error) {
-        console.log(error)
-        return res.status(500).json({
-            error:'Server Error occurred'
-        })
+        next(error)
     }
 
 
