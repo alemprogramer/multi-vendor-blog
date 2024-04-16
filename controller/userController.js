@@ -1,3 +1,4 @@
+const Profile = require("../models/Profile");
 const User = require("../models/User")
 
 exports.getAllUserController = async (req,res,next)=>{
@@ -14,5 +15,20 @@ exports.getAllUserController = async (req,res,next)=>{
         })
     } catch (error) {
         next(error)
+    }
+}
+
+exports.getUserProfileData = async (req, res, next)=>{
+    try {
+        const user =await Profile.findOne({user:req.id}).populate({
+            path:'user',
+            select:'email'
+        });
+        console.log("🚀 ~ user ~ user:", user)
+        res.status(200).json({
+            user
+        })
+    } catch (error) {
+        next(error);
     }
 }
