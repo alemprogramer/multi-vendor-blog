@@ -28,12 +28,6 @@ const profileSchema = new Schema({
         youtube:String,
         github:String
     },
-    post:[
-        {
-            type:Schema.Types.ObjectId,
-            ref: 'Post',
-        }
-    ],
     bookmark: [
         {
             type:Schema.Types.ObjectId,

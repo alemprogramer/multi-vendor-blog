@@ -23,28 +23,28 @@ const postSchema = new Schema({
         ref: 'User',
         required: true
     },
-    // image: [{
-    //     type: String,
-    // }],
     thumbnail: String,
-    readtime: String,
+    readTime: String,
     comments: [{
         type: Schema.Types.ObjectId,
         ref: 'Comments',
     }],
+    numberOfLikes: Number,
     likes: [{
         type: Schema.Types.ObjectId,
         ref: 'User',
     }],
+    numberOfDislikes: Number,
     dislikes: [{
         type: Schema.Types.ObjectId,
         ref: 'User',
     }],
+    numbersOfShare: Number,
     shares: [{
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: 'Share',
+
     }],
-
-
 
 }, {
     timestamps: true
