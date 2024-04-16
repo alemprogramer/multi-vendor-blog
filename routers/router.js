@@ -1,7 +1,12 @@
 const url = require('url');
 const userRouter = require('../routers/userRouter');
 const authRouter = require('../routers/authRouter');
+const postRouter = require('../routers/postRouter');
 const routers = [
+    {
+        path:'/post',
+        handler: postRouter
+    },
     {
         path: '/auth',
         handler: authRouter
