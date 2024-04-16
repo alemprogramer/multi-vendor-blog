@@ -5,7 +5,7 @@ const shareSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Post',
     },
-   shareCount:Number
+    shareCount:Number
     
 });
 
