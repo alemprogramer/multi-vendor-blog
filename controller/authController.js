@@ -1,9 +1,10 @@
+const Profile = require('../models/Profile');
 const User = require('../models/User');
 const { createJWT, verifyJWT } = require('../utils/jwt');
 const {hash,compare} = require('../utils/passwordEncrypt');
 exports.userRegisterController = async (req,res,next) => {
     try {
-        const {email,password} = req.body
+        const {email,password,name,bio,title} = req.body
         if(!email){
             return res.status(403).json({message: "Please enter your email address"})
         }
@@ -17,7 +18,11 @@ exports.userRegisterController = async (req,res,next) => {
         
         let passwordHash =await  hash(password,11);
 
-        await User.create({email,password:passwordHash,name:email.split('@')[0]});
+        const newUser = await User.create({email,password:passwordHash,name:email.split('@')[0]});
+
+        const profile = await Profile.create({name: name || email.split('@')[0],user: newUser._id,bio:bio,title:title})
+
+        await User.findOneAndUpdate({email: email},{profile:profile._id})
 
         res.status(200).json({message: 'User created successfully'});
         
