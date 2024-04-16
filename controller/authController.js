@@ -18,7 +18,7 @@ exports.userRegisterController = async (req,res,next) => {
         
         let passwordHash =await  hash(password,11);
 
-        const newUser = await User.create({email,password:passwordHash,name:email.split('@')[0]});
+        const newUser = await User.create({email,password:passwordHash});
 
         const profile = await Profile.create({name: name || email.split('@')[0],user: newUser._id,bio:bio,title:title})
 

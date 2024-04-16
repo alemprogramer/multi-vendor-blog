@@ -2,13 +2,6 @@ const {Schema,model} = require('mongoose');
 const Profile = require('./Profile');
 
 const userSchema = new Schema({
-    name: {
-        type: String,
-        required: true,
-        trim: true,
-        maxlength:100,
-
-    },
     email: {
         type: String,
         required: true,
